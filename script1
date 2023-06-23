@@ -1,0 +1,32 @@
+#! bin/bash
+
+####################################
+# Резервное копирование в NFS.
+####################################
+
+# Что нужно копировать.
+backup_files="/home /var/log /etc/xrdp /etc/ssh/sshd_config /etc/vsftpd.conf"
+
+# Куда создать резервную копию.
+dest="/archive"
+
+# Создание имя файла архива.
+day=$(date +%A)
+hostname=$(hostname -s)
+archive_file="$hostname-$day.tgz"
+
+# Выведите сообщение о состоянии запуска.
+echo "Backing up $backup_files to $dest/$archive_file"
+date
+echo
+
+# Резервное копирование файлов с помощью tar.
+tar czf $dest/$archive_file $backup_files
+
+# Выведите сообщение о завершении работы.
+echo
+echo "Backup finished"
+date
+
+# Длинный список файлов в $dest для проверки размеров файлов.
+ls -lh $dest
